@@ -33,6 +33,7 @@ primaryButton.onclick = loadPrimaryImageUrl;
 secondaryButton.onclick = loadSecondaryImageUrl;
 const mainRow = document.getElementById("main-row");
 function loadCards() {
+  alertUser();
   mainRow.innerHTML = "";
   images.map((elem) => {
     const column = document.createElement("div");
@@ -78,4 +79,12 @@ function showModal(event) {
 
 function hideCard(event) {
   event.target.parentNode.parentNode.classList.add("d-none");
+}
+const mainAlert = document.getElementById("main-alert");
+function alertUser() {
+  mainAlert.classList.toggle("d-none");
+  mainAlert.innerHTML = `${images.length} pictures loaded`;
+  setTimeout(() => {
+    mainAlert.classList.toggle("d-none");
+  }, 6000);
 }

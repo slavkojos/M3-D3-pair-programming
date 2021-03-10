@@ -18,6 +18,10 @@
     />
 
     <style>
+      #main-alert {
+        opacity: 80%;
+        text-align: center;
+      }
       .jumbotron {
         padding-top: 3rem;
         padding-bottom: 3rem;
@@ -149,6 +153,7 @@
 
       <div class="album py-5 bg-light">
         <div class="container">
+          <div id="main-alert" class="alert alert-primary d-none" role="alert"></div>
           <div id="main-row" class="row"></div>
         </div>
       </div>
@@ -170,8 +175,6 @@
         </div>
       </div>
     </div>
-
-    <div class="alert alert-primary d-none" role="alert">A simple primary alert—check it out!</div>
 
     <footer class="text-muted">
       <div class="container">
@@ -197,6 +200,5 @@
       crossorigin="anonymous"
     ></script>
     <script src="index.js"></script>
-    t
   </body>
 </html>
