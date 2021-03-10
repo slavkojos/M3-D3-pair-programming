@@ -26,9 +26,25 @@ function loadSecondaryImageUrl(index) {
     });
 }
 
+function loadQuery() {
+  console.log(searchButton.value);
+  fetch(`http://www.splashbase.co/api/v1/images/search?query=${queryInput.value.toLowerCase()}`)
+    .then((response) => response.json())
+    .then((data) => {
+      images = data.images;
+      console.log(images);
+      loadCards();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+const queryInput = document.getElementById("query-input");
+const searchButton = document.getElementById("query-button");
 const primaryButton = document.getElementById("load-primary");
 const secondaryButton = document.getElementById("load-secondary");
 
+searchButton.onclick = loadQuery;
 primaryButton.onclick = loadPrimaryImageUrl;
 secondaryButton.onclick = loadSecondaryImageUrl;
 const mainRow = document.getElementById("main-row");
@@ -82,7 +98,7 @@ function hideCard(event) {
 }
 const mainAlert = document.getElementById("main-alert");
 function alertUser() {
-  mainAlert.classList.toggle("d-none");
+  mainAlert.classList.add("d-block");
   mainAlert.innerHTML = `${images.length} pictures loaded`;
   setTimeout(() => {
     mainAlert.classList.toggle("d-none");
