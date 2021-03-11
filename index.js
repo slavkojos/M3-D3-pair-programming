@@ -3,61 +3,39 @@ const mainRow = document.getElementById("main-row");
 const loadingSpinner = document.getElementById("loading-spinner");
 const loadingButtonState = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 Loading...`;
-function loadPrimaryImageUrl(index) {
-  primaryButton.innerHTML = loadingButtonState;
-  fetch("http://www.splashbase.co/api/v1/images/search?query=beach")
+function fetchUrl(event, endpoint) {
+  let beforeButtonState = event.target.innerHTML;
+  event.target.innerHTML = loadingButtonState;
+  fetch(`http://www.splashbase.co/api/v1/images/search?query=${endpoint}`)
     .then((response) => response.json())
     .then((data) => {
-      primaryButton.innerHTML = "Load Images";
+      event.target.innerHTML = beforeButtonState;
       images = data.images;
-      console.log(images);
       loadCards();
     })
     .catch((err) => {
+      alertUser("fail");
       console.error(err);
     });
 }
 
-function loadSecondaryImageUrl(index) {
-  secondaryButton.innerHTML = loadingButtonState;
-  fetch("http://www.splashbase.co/api/v1/images/search?query=forest")
-    .then((response) => response.json())
-    .then((data) => {
-      secondaryButton.innerHTML = "Load Secondary Images";
-      images = data.images;
-      console.log(images);
-      loadCards();
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-}
-
-function loadQuery() {
-  searchButton.innerHTML = loadingButtonState;
-  fetch(`http://www.splashbase.co/api/v1/images/search?query=${queryInput.value.toLowerCase()}`)
-    .then((response) => response.json())
-    .then((data) => {
-      searchButton.innerHTML = "Search";
-      images = data.images;
-      console.log(images);
-      loadCards();
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-}
 const queryInput = document.getElementById("query-input");
 const searchButton = document.getElementById("query-button");
 const primaryButton = document.getElementById("load-primary");
 const secondaryButton = document.getElementById("load-secondary");
 
-searchButton.onclick = loadQuery;
-primaryButton.onclick = loadPrimaryImageUrl;
-secondaryButton.onclick = loadSecondaryImageUrl;
+primaryButton.addEventListener("click", function (event) {
+  fetchUrl(event, "beach");
+});
+secondaryButton.addEventListener("click", function (event) {
+  fetchUrl(event, "forest");
+});
+searchButton.addEventListener("click", function (event) {
+  fetchUrl(event, queryInput.value.toLowerCase());
+});
 
 function loadCards() {
-  alertUser();
+  alertUser("success");
   mainRow.innerHTML = "";
   images.map((elem) => {
     const column = document.createElement("div");
@@ -105,9 +83,13 @@ function hideCard(event) {
   event.target.parentNode.parentNode.classList.add("d-none");
 }
 const mainAlert = document.getElementById("main-alert");
-function alertUser() {
+function alertUser(type) {
   mainAlert.classList.toggle("d-none");
-  mainAlert.innerHTML = `${images.length} pictures loaded`;
+  if (type === "success") {
+    mainAlert.innerHTML = `${images.length} pictures loaded`;
+  } else if (type === "fail") {
+    mainAlert.innerHTML = `Error while fetcing images`;
+  }
   setTimeout(() => {
     mainAlert.classList.toggle("d-none");
   }, 6000);
