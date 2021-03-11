@@ -18,6 +18,26 @@
     />
 
     <style>
+      .fade-out {
+        -webkit-animation: fade-out 1s ease-out both;
+        animation: fade-out 1s ease-out both;
+      }
+      @-webkit-keyframes fade-out {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      @keyframes fade-out {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
       #main-alert {
         opacity: 80%;
         text-align: center;
@@ -162,7 +182,11 @@
           </div>
         </div>
       </section>
-
+      <div id="loading-spinner" class="text-center d-none">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
       <div class="album py-5 bg-light">
         <div class="container">
           <div id="main-alert" class="alert alert-primary d-none" role="alert"></div>

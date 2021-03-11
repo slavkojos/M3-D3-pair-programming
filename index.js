@@ -1,9 +1,14 @@
 let images = [];
-
+const mainRow = document.getElementById("main-row");
+const loadingSpinner = document.getElementById("loading-spinner");
+const loadingButtonState = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+Loading...`;
 function loadPrimaryImageUrl(index) {
+  primaryButton.innerHTML = loadingButtonState;
   fetch("http://www.splashbase.co/api/v1/images/search?query=beach")
     .then((response) => response.json())
     .then((data) => {
+      primaryButton.innerHTML = "Load Images";
       images = data.images;
       console.log(images);
       loadCards();
@@ -14,9 +19,11 @@ function loadPrimaryImageUrl(index) {
 }
 
 function loadSecondaryImageUrl(index) {
+  secondaryButton.innerHTML = loadingButtonState;
   fetch("http://www.splashbase.co/api/v1/images/search?query=forest")
     .then((response) => response.json())
     .then((data) => {
+      secondaryButton.innerHTML = "Load Secondary Images";
       images = data.images;
       console.log(images);
       loadCards();
@@ -27,10 +34,11 @@ function loadSecondaryImageUrl(index) {
 }
 
 function loadQuery() {
-  console.log(searchButton.value);
+  searchButton.innerHTML = loadingButtonState;
   fetch(`http://www.splashbase.co/api/v1/images/search?query=${queryInput.value.toLowerCase()}`)
     .then((response) => response.json())
     .then((data) => {
+      searchButton.innerHTML = "Search";
       images = data.images;
       console.log(images);
       loadCards();
@@ -47,7 +55,7 @@ const secondaryButton = document.getElementById("load-secondary");
 searchButton.onclick = loadQuery;
 primaryButton.onclick = loadPrimaryImageUrl;
 secondaryButton.onclick = loadSecondaryImageUrl;
-const mainRow = document.getElementById("main-row");
+
 function loadCards() {
   alertUser();
   mainRow.innerHTML = "";
@@ -98,7 +106,7 @@ function hideCard(event) {
 }
 const mainAlert = document.getElementById("main-alert");
 function alertUser() {
-  mainAlert.classList.add("d-block");
+  mainAlert.classList.toggle("d-none");
   mainAlert.innerHTML = `${images.length} pictures loaded`;
   setTimeout(() => {
     mainAlert.classList.toggle("d-none");
